@@ -34,18 +34,27 @@ class NewVisitorTest(unittest.TestCase):
 		# When he hits enter, the page updates and now the page shows;
 		# "1: Buy GTAV for PS4" as an item in a to-do list
 		inputbox.send_keys(Keys.ENTER)
+		import time
+		# time.sleep(10)
 		table = self.browser.find_element_by_id('id_list_table')
 		rows = table.find_elements_by_tag_name('tr')
-		self.assertTrue(any(row.text == '1: Buy GTAV for PS4' for row in rows),"New item did not appear in table")
+		self.assertIn('1: Buy GTAV for PS4', [row.text for row in rows])
 
 		# There is still a text box inviting him to add another item
 		# He enters "Buy FFVIIHD on SEN" (Jamie's favourite game in the world)
-		self.fail('Finish the test!')
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox.send_keys('Buy FFVIIHD on SEN')
+		inputbox.send_keys(Keys.ENTER)
 
 		# The page updates again and now shows both items on his list
+		table = self.browser.find_element_by_id('id_list_table')
+		rows = table.find_elements_by_tag_name('tr')
+		self.assertIn('1: Buy GTAV for PS4', [row.text for row in rows])
+		self.assertIn('2: Buy FFVIIHD on SEN', [row.text for row in rows])
 
 		# Jamie wonders if the site will remember his to-do items
 		# He sees that the site has generated a unique URL for him
+		self.fail('Finish the test!')
 
 		# He visits the unique URL and the to-do list is there
 
